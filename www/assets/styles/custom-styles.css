@@ -1,0 +1,7 @@
+.slds-table td {
+    padding: 0.2rem 0.5rem 0.2rem 0.5rem !important;
+}
+
+tbody tr:hover {
+    background-color: #f4f6f9;
+}

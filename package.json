@@ -1,0 +1,22 @@
+{
+  "name": "LightningTrader",
+  "version": "1.0.0",
+  "description": "Trader Desktop built with React and the Lightning Design System",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-client": "browserify www/js/app.js -t babelify -o www/js/bundle.js",
+    "start": "node server.js"
+  },
+  "author": "Christophe Coenraets <ccoenraets@gmail.com> (http://coenraets.org/)",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.12.3",
+    "socket.io": "^1.3.5"
+  },
+  "devDependencies": {
+    "babelify": "^6.2.0",
+    "browserify": "^11.0.1",
+    "react": "^0.13.3"
+  }
+}
