@@ -5,6 +5,9 @@ var express = require('express'),
     io = require('socket.io')(http),
     feed = require('./feed');
 
+
+app.set('port', process.env.PORT || 3000);
+
 app.use(express.static(path.join(__dirname, './www')));
 
 io.on('connection', function (socket) {
@@ -41,6 +44,6 @@ feed.start(function(room, type, message) {
     io.to(room).emit(type, message);
 });
 
-http.listen(3000, function () {
-    console.log('listening on: 3000');
+app.listen(app.get('port'), function () {
+    console.log('Express server listening on port ' + app.get('port'));
 });
