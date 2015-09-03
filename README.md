@@ -4,7 +4,7 @@ Sample Trader Desktop application built with [React](http://facebook.github.io/r
 
 Check out this video for a quick walkthrough:
 
-[![Video](http://img.youtube.com/vi/xL_c06tpSas/0.jpg)](http://www.youtube.com/watch?v=xL_c06tpSas)
+[![Video](http://img.youtube.com/vi/53oTIny4gN4/0.jpg)](http://www.youtube.com/watch?v=53oTIny4gN4)
 
 The back-end is built with **Node.js** and **Socket.io**. 
 
@@ -51,13 +51,11 @@ Follow the instructions below if you prefer to install the application on your l
     npm start
     ```
     
-    The database is automatically populated
-    
 1. Open a browser and access [http://localhost:3000](http://localhost:3000)    
 
 ## Using the Socket.io Feed
 
-By default the application is using a mock feed simulated at the client-side. To use the actual Socket.io feed: 
+By default the application uses a mock feed simulated at the client-side. To use the actual Socket.io feed: 
 
 1. Open js/app.js
 
