@@ -2,6 +2,7 @@ import React from 'react';
 
 // Comment out for mock client-side feed
 import * as feed from './services/feed-mock';
+import {Alert, Toast} from './components/Notification';
 
 // Comment out for real socket.io feed
 // import * as feed from './services/feed-socketio';
@@ -20,7 +21,7 @@ let App = React.createClass({
             stocks[stock.symbol] = stock;
             this.setState({stocks: stocks, last: stock});
         });
-        return {stocks: stocks, sort: "symbol"};
+        return {stocks: stocks, sort: "symbol", toast: false};
     },
     buyHandler(stock) {
         this.setState({buyWindow:stock});
@@ -30,6 +31,10 @@ let App = React.createClass({
     },
     closeWindowHandler() {
         this.setState({buyWindow: false, sellWindow: false});
+    },
+    saveHandler() {
+        this.setState({buyWindow: false, sellWindow: false, toast: true});
+        setTimeout(() => this.setState({toast: false}), 900);
     },
     watch(symbols) {
         symbols = symbols.replace(/ /g,'');
@@ -49,7 +54,8 @@ let App = React.createClass({
     render() {
         return (
             <div>
-                <Header type="Portfolio" title="Diversified Tech" itemCount="10" newLabel="New Portfolio"
+                <Alert title="All stock values are fake and changes are simulated. Do not trade based on the data below."/>
+                <Header type="Portfolio" title="Tech Diversified" itemCount="10" newLabel="New Portfolio"
                         viewOptions={[{value:"grid", label:"Grid", icon: "table"}]}
                         sortOptions={[{value:"symbol", label:"Symbol"},{value:"open", label:"Open"},{value:"last", label:"Last"},{value:"change", label:"Change"},{value:"high", label:"High"},{value:"low", label:"Low"}]}
                         onSort={this.sortHandler}/>
@@ -57,8 +63,9 @@ let App = React.createClass({
                            onBuy={this.buyHandler}
                            onSell={this.sellHandler}
                            onRemove={this.removeHandler}/>
-                {this.state.buyWindow ? <BuyWindow onSave={this.saveHandler} onSave={this.closeWindowHandler} onCancel={this.closeWindowHandler} stock={this.state.buyWindow}/> : ""}
-                {this.state.sellWindow ? <SellWindow onSave={this.saveHandler} onSave={this.closeWindowHandler} onCancel={this.closeWindowHandler} stock={this.state.sellWindow}/> : ""}
+                {this.state.buyWindow ? <BuyWindow onSave={this.saveHandler} onSave={this.saveHandler} onCancel={this.closeWindowHandler} stock={this.state.buyWindow}/> : ""}
+                {this.state.sellWindow ? <SellWindow onSave={this.saveHandler} onSave={this.saveHandler} onCancel={this.closeWindowHandler} stock={this.state.sellWindow}/> : ""}
+                <Toast title="Order submitted successfully" visible={this.state.toast}/>
             </div>
         );
     }

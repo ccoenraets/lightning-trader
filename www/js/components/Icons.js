@@ -3,6 +3,7 @@ import React from 'react';
 export let ButtonIcon = React.createClass({
 
     render() {
+        let svgStyle = this.props.color ? {fill: this.props.color} : {};
         let useTag = '<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#' + this.props.name + '" />';
         let className  = "slds-button__icon";
         if (this.props.stateful) {
@@ -17,7 +18,7 @@ export let ButtonIcon = React.createClass({
         if (this.props.hint) {
             className = className + " slds-button__icon--hint";
         }
-        return <svg  aria-hidden="true" className={className} dangerouslySetInnerHTML={{__html: useTag }} />;
+        return <svg  aria-hidden="true" className={className} dangerouslySetInnerHTML={{__html: useTag }}  style={svgStyle} />;
     }
 
 });

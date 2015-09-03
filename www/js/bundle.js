@@ -19825,6 +19825,8 @@ var _servicesFeedMock = require('./services/feed-mock');
 
 var feed = _interopRequireWildcard(_servicesFeedMock);
 
+var _componentsNotification = require('./components/Notification');
+
 // Comment out for real socket.io feed
 // import * as feed from './services/feed-socketio';
 
@@ -19856,7 +19858,7 @@ var App = _react2['default'].createClass({
             stocks[stock.symbol] = stock;
             _this.setState({ stocks: stocks, last: stock });
         });
-        return { stocks: stocks, sort: "symbol" };
+        return { stocks: stocks, sort: "symbol", toast: false };
     },
     buyHandler: function buyHandler(stock) {
         this.setState({ buyWindow: stock });
@@ -19866,6 +19868,14 @@ var App = _react2['default'].createClass({
     },
     closeWindowHandler: function closeWindowHandler() {
         this.setState({ buyWindow: false, sellWindow: false });
+    },
+    saveHandler: function saveHandler() {
+        var _this2 = this;
+
+        this.setState({ buyWindow: false, sellWindow: false, toast: true });
+        setTimeout(function () {
+            return _this2.setState({ toast: false });
+        }, 900);
     },
     watch: function watch(symbols) {
         symbols = symbols.replace(/ /g, '');
@@ -19884,7 +19894,8 @@ var App = _react2['default'].createClass({
         return _react2['default'].createElement(
             'div',
             null,
-            _react2['default'].createElement(_modulesHeader2['default'], { type: 'Portfolio', title: 'Diversified Tech', itemCount: '10', newLabel: 'New Portfolio',
+            _react2['default'].createElement(_componentsNotification.Alert, { title: 'All stock values are fake and changes are simulated. Do not trade based on the data below.' }),
+            _react2['default'].createElement(_modulesHeader2['default'], { type: 'Portfolio', title: 'Tech Diversified', itemCount: '10', newLabel: 'New Portfolio',
                 viewOptions: [{ value: "grid", label: "Grid", icon: "table" }],
                 sortOptions: [{ value: "symbol", label: "Symbol" }, { value: "open", label: "Open" }, { value: "last", label: "Last" }, { value: "change", label: "Change" }, { value: "high", label: "High" }, { value: "low", label: "Low" }],
                 onSort: this.sortHandler }),
@@ -19892,15 +19903,16 @@ var App = _react2['default'].createClass({
                 onBuy: this.buyHandler,
                 onSell: this.sellHandler,
                 onRemove: this.removeHandler }),
-            this.state.buyWindow ? _react2['default'].createElement(_modulesBuyWindow2['default'], { onSave: this.saveHandler, onSave: this.closeWindowHandler, onCancel: this.closeWindowHandler, stock: this.state.buyWindow }) : "",
-            this.state.sellWindow ? _react2['default'].createElement(_modulesSellWindow2['default'], { onSave: this.saveHandler, onSave: this.closeWindowHandler, onCancel: this.closeWindowHandler, stock: this.state.sellWindow }) : ""
+            this.state.buyWindow ? _react2['default'].createElement(_modulesBuyWindow2['default'], { onSave: this.saveHandler, onSave: this.saveHandler, onCancel: this.closeWindowHandler, stock: this.state.buyWindow }) : "",
+            this.state.sellWindow ? _react2['default'].createElement(_modulesSellWindow2['default'], { onSave: this.saveHandler, onSave: this.saveHandler, onCancel: this.closeWindowHandler, stock: this.state.sellWindow }) : "",
+            _react2['default'].createElement(_componentsNotification.Toast, { title: 'Order submitted successfully', visible: this.state.toast })
         );
     }
 });
 
 _react2['default'].render(_react2['default'].createElement(App, null), document.body);
 
-},{"./modules/BuyWindow":160,"./modules/Header":161,"./modules/SellWindow":162,"./modules/StockGrid":163,"./services/feed-mock":164,"react":156}],158:[function(require,module,exports){
+},{"./components/Notification":160,"./modules/BuyWindow":161,"./modules/Header":162,"./modules/SellWindow":163,"./modules/StockGrid":164,"./services/feed-mock":165,"react":156}],158:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20100,6 +20112,7 @@ var ButtonIcon = _react2['default'].createClass({
     displayName: 'ButtonIcon',
 
     render: function render() {
+        var svgStyle = this.props.color ? { fill: this.props.color } : {};
         var useTag = '<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#' + this.props.name + '" />';
         var className = "slds-button__icon";
         if (this.props.stateful) {
@@ -20114,7 +20127,7 @@ var ButtonIcon = _react2['default'].createClass({
         if (this.props.hint) {
             className = className + " slds-button__icon--hint";
         }
-        return _react2['default'].createElement('svg', { 'aria-hidden': 'true', className: className, dangerouslySetInnerHTML: { __html: useTag } });
+        return _react2['default'].createElement('svg', { 'aria-hidden': 'true', className: className, dangerouslySetInnerHTML: { __html: useTag }, style: svgStyle });
     }
 
 });
@@ -20165,6 +20178,82 @@ var InputIcon = _react2['default'].createClass({
 exports.InputIcon = InputIcon;
 
 },{"react":156}],160:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Icons = require("./Icons");
+
+var Toast = _react2["default"].createClass({
+    displayName: "Toast",
+
+    render: function render() {
+        return _react2["default"].createElement(
+            "div",
+            { className: "slds-notify-container" + (this.props.visible ? " visible" : "") },
+            _react2["default"].createElement(
+                "div",
+                { className: "slds-notify slds-notify--toast slds-theme--success slds-theme--inverse-text", role: "alert" },
+                _react2["default"].createElement(
+                    "span",
+                    { className: "slds-assistive-text" },
+                    "Info"
+                ),
+                _react2["default"].createElement(
+                    "button",
+                    { className: "slds-button slds-notify__close" },
+                    _react2["default"].createElement(_Icons.ButtonIcon, { category: "utility", inverse: true, color: "#FFFFFF", name: "close" }),
+                    _react2["default"].createElement(
+                        "span",
+                        { className: "slds-assistive-text" },
+                        "Close"
+                    )
+                ),
+                _react2["default"].createElement(
+                    "div",
+                    { className: "notify__content" },
+                    _react2["default"].createElement(
+                        "h2",
+                        { className: "slds-text-heading--small" },
+                        this.props.title
+                    )
+                )
+            )
+        );
+    }
+
+});
+
+exports.Toast = Toast;
+var Alert = _react2["default"].createClass({
+    displayName: "Alert",
+
+    render: function render() {
+        return _react2["default"].createElement(
+            "div",
+            { className: "slds-notify slds-notify--alert slds-theme--alert-texture", role: "alert" },
+            _react2["default"].createElement(
+                "h2",
+                null,
+                _react2["default"].createElement(_Icons.Icon, { category: "utility", name: "notification", size: "x-small" }),
+                "  ",
+                this.props.title
+            )
+        );
+    }
+
+});
+exports.Alert = Alert;
+
+},{"./Icons":159,"react":156}],161:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20325,7 +20414,7 @@ exports["default"] = _react2["default"].createClass({
 });
 module.exports = exports["default"];
 
-},{"../components/Icons":159,"react":156}],161:[function(require,module,exports){
+},{"../components/Icons":159,"react":156}],162:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20456,7 +20545,7 @@ exports["default"] = _react2["default"].createClass({
 });
 module.exports = exports["default"];
 
-},{"../components/Dropdown":158,"../components/Icons":159,"react":156}],162:[function(require,module,exports){
+},{"../components/Dropdown":158,"../components/Icons":159,"react":156}],163:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20631,7 +20720,7 @@ exports["default"] = _react2["default"].createClass({
 });
 module.exports = exports["default"];
 
-},{"../components/Icons":159,"react":156}],163:[function(require,module,exports){
+},{"../components/Icons":159,"react":156}],164:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20925,7 +21014,7 @@ exports["default"] = _react2["default"].createClass({
 });
 module.exports = exports["default"];
 
-},{"../components/Dropdown":158,"../components/Icons":159,"react":156}],164:[function(require,module,exports){
+},{"../components/Dropdown":158,"../components/Icons":159,"react":156}],165:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
