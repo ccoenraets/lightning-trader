@@ -1,10 +1,10 @@
-# Lightning Trader 
+# Lightning Trader Application
 
 Sample Trader Desktop application built with [React](http://facebook.github.io/react/) and the [Lightning Design System](www.lightningdesignsystem.com). 
 
 Check out this video for a quick walkthrough:
 
-[![Video](http://img.youtube.com/vi/53oTIny4gN4/0.jpg)](http://www.youtube.com/watch?v=53oTIny4gN4)
+[![Video link](http://img.youtube.com/vi/53oTIny4gN4/0.jpg)](http://www.youtube.com/watch?v=53oTIny4gN4)
 
 The back-end is built with **Node.js** and **Socket.io**. 
 
